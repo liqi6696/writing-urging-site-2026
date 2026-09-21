@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写作敦促所 · 大师轮班督促你写作</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecdc; --paper2:#efe4cd; --ink:#2b2419; --ink-soft:#5a4f3c;
+  --accent:#8a3b2e; --accent2:#3f5a45; --gold:#a8834a; --line:#d8c9a8;
+  --shadow:0 10px 30px rgba(60,45,20,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Serif SC',serif; color:var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(216,201,168,.35), transparent 45%),
+    radial-gradient(circle at 85% 90%, rgba(168,131,74,.18), transparent 40%),
+    var(--paper);
+  min-height:100vh;
+}
+::selection{background:var(--gold);color:#fff}
+
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(244,236,220,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.nav{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:14px 20px;flex-wrap:wrap}
+.logo{font-family:'Ma Shan Zheng',cursive;font-size:26px;letter-spacing:2px;color:var(--accent);margin-right:auto;text-decoration:none}
+.logo span{color:var(--gold)}
+nav a{
+  text-decoration:none;color:var(--ink-soft);padding:8px 16px;border-radius:999px;
+  font-size:15px;letter-spacing:1px;transition:all .25s;
+}
+nav a:hover{color:var(--accent);background:rgba(138,59,46,.08)}
+nav a.active{color:#fff;background:var(--accent)}
+
+.page{display:none;max-width:1080px;margin:0 auto;padding:48px 20px 90px;animation:fadeUp .55s ease both}
+.page.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+h1.title{font-family:'Ma Shan Zheng',cursive;font-size:clamp(34px,5vw,52px);text-align:center;color:var(--ink);letter-spacing:4px}
+.subtitle{text-align:center;color:var(--ink-soft);margin-top:10px;letter-spacing:2px;font-size:15px}
+
+.masters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px;margin-top:56px}
+.card{
+  position:relative;background:var(--paper2);border:1px solid var(--line);border-radius:16px;
+  padding:28px 22px 26px;text-align:center;cursor:pointer;box-shadow:var(--shadow);
+  transition:transform .35s cubic-bezier(.2,.8,.3,1.2), box-shadow .35s;
+  animation:cardIn .7s ease both;
+}
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.2s}
+.card:nth-child(3){animation-delay:.35s}
+.card:nth-child(4){animation-delay:.48s}
+@keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-10px);box-shadow:0 22px 44px rgba(60,45,20,.22)}
+.card img{
+  width:150px;height:150px;object-fit:cover;border-radius:50%;
+  border:5px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.18);
+  filter:sepia(.35) contrast(1.02);transition:filter .35s, transform .35s;
+}
+.card:hover img{filter:sepia(.1);transform:scale(1.04)}
+.card h3{margin-top:16px;font-size:21px;letter-spacing:2px}
+.card .era{font-size:13px;color:var(--gold);margin-top:4px;letter-spacing:1px}
+.card .role{margin-top:10px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.card .wave{
+  position:absolute;top:8px;right:12px;font-size:34px;opacity:0;transform-origin:70% 80%;
+  pointer-events:none;
+}
+.card.greet .wave{animation:waveHand 1s ease-in-out 2}
+@keyframes waveHand{
+  0%,100%{opacity:0;transform:rotate(0)}
+  15%{opacity:1}
+  35%{transform:rotate(24deg)}
+  55%{transform:rotate(-8deg)}
+  75%{transform:rotate(20deg)}
+  90%{opacity:1}
+}
+.bubble{
+  position:absolute;left:50%;top:-18px;transform: translate(-50%,-100%) scale(.6);
+  background:#fffdf6;border:1px solid var(--line);border-radius:14px;padding:12px 16px;
+  width:300px;font-size:14px;line-height:1.7;color:var(--ink);box-shadow:var(--shadow);
+  opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.2,.8,.3,1.3);z-index:5;
+}
+.bubble::after{
+  content:'';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  border:8px solid transparent;border-top-color:#fffdf6;border-bottom:0;
+}
+.bubble.on{opacity:1;transform:translate(-50%,-100%) scale(1)}
+
+.daily{margin-top:72px;background:var(--paper2);border:1px solid var(--line);border-left:5px solid var(--gold);
+  border-radius:12px;padding:28px 32px;box-shadow:var(--shadow);position:relative}
+.daily .tag{position:absolute;top:-13px;left:24px;background:var(--gold);color:#fff;font-size:12px;
+  letter-spacing:2px;padding:4px 14px;border-radius:999px}
+.daily blockquote{font-size:clamp(17px,2.4vw,21px);line-height:2;color:var(--ink)}
+.daily cite{display:block;margin-top:12px;text-align:right;color:var(--ink-soft);font-size:14px;letter-spacing:1px}
+.cta-row{text-align:center;margin-top:44px}
+
+.btn{
+  display:inline-block;font-family:inherit;font-size:15px;letter-spacing:2px;cursor:pointer;
+  background:var(--accent);color:#fff;border:none;border-radius:999px;padding:13px 34px;
+  box-shadow:0 6px 16px rgba(138,59,46,.3);transition:all .25s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(138,59,46,.4)}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent);box-shadow:none}
+.btn.ghost:hover{background:rgba(138,59,46,.08)}
+.btn.small{padding:9px 22px;font-size:13px}
+
+.duty{
+  display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;margin-top:48px;
+  background:var(--paper2);border:1px solid var(--line);border-radius:18px;padding:36px;box-shadow:var(--shadow);
+}
+.duty .portrait{flex:0 0 210px;text-align:center}
+.duty .portrait img{width:210px;height:280px;object-fit:cover;border-radius:12px;border:6px solid #fff;
+  box-shadow:0 10px 26px rgba(0,0,0,.2);filter:sepia(.3)}
+.duty .portrait .stamp{margin-top:10px;font-size:12px;color:var(--gold);letter-spacing:2px}
+.duty .speech{flex:1;min-width:280px}
+.duty .who{font-size:14px;color:var(--gold);letter-spacing:3px;margin-bottom:14px}
+.duty .quote{font-size:clamp(18px,2.6vw,24px);line-height:2.05;min-height:140px;color:var(--ink)}
+.duty .quote .caret{display:inline-block;width:2px;height:1.1em;background:var(--accent);
+  vertical-align:-0.15em;margin-left:2px;animation:blink .8s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.duty .src{margin-top:16px;font-size:13px;color:var(--ink-soft);letter-spacing:1px}
+
+.checkin{margin-top:36px;background:var(--paper2);border:1px solid var(--line);border-radius:18px;
+  padding:30px 34px;box-shadow:var(--shadow)}
+.checkin h3{letter-spacing:2px;font-size:19px;margin-bottom:18px;color:var(--accent)}
+.checkin .row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.checkin input[type=number]{
+  font-family:inherit;font-size:15px;padding:11px 16px;border-radius:10px;border:1.5px solid var(--line);
+  background:#fffdf6;width:150px;color:var(--ink);outline:none;transition:border .2s;
+}
+.checkin input[type=number]:focus{border-color:var(--accent)}
+.checkin .hint{font-size:13px;color:var(--ink-soft)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:44px}
+.stat{background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:22px;text-align:center;box-shadow:var(--shadow)}
+.stat .num{font-size:34px;font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat .lbl{font-size:13px;color:var(--ink-soft);margin-top:6px;letter-spacing:2px}
+
+.notes-wrap{margin-top:48px;display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:860px){.notes-wrap{grid-template-columns:400px 1fr}}
+.note-input{background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);height:fit-content;position:sticky;top:90px}
+.note-input h3{letter-spacing:2px;color:var(--accent);margin-bottom:14px}
+.note-input textarea{
+  width:100%;min-height:170px;resize:vertical;font-family:inherit;font-size:15px;line-height:1.9;
+  padding:14px 16px;border-radius:10px;border:1.5px solid var(--line);background:#fffdf6;color:var(--ink);outline:none;
+  transition:border .2s;
+}
+.note-input textarea:focus{border-color:var(--accent)}
+.note-input .tools{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.note-input .kbd{font-size:12px;color:var(--ink-soft)}
+.note-input kbd{background:#fffdf6;border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-family:inherit;font-size:12px}
+.note-list{display:flex;flex-direction:column;gap:16px}
+.note{
+  position:relative;background:#fffdf6;border:1px solid var(--line);border-radius:12px;
+  padding:18px 22px;line-height:1.95;font-size:15px;box-shadow:0 4px 14px rgba(60,45,20,.08);
+  animation:fadeUp .4s ease both;white-space:pre-wrap;word-break:break-word;
+}
+.note .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;
+  font-size:12px;color:var(--gold);letter-spacing:1px}
+.note .del{
+  position:absolute;top:10px;right:12px;border:none;background:none;color:var(--ink-soft);
+  font-size:17px;cursor:pointer;opacity:0;transition:opacity .2s, color .2s;line-height:1;padding:4px;
+}
+.note:hover .del{opacity:.7}
+.note .del:hover{color:var(--accent);opacity:1}
+.empty{color:var(--ink-soft);text-align:center;padding:60px 20px;border:1.5px dashed var(--line);border-radius:12px;line-height:2}
+
+footer{border-top:1px solid var(--line);text-align:center;padding:26px 20px;color:var(--ink-soft);font-size:13px;letter-spacing:1px;line-height:2}
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translate(-50%,80px);background:var(--ink);color:var(--paper);
+  padding:12px 26px;border-radius:999px;font-size:14px;letter-spacing:1px;opacity:0;transition:all .35s;z-index:99;
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="logo" href="#/home">写作敦促所<span> ✒</span></a>
+    <nav>
+      <a href="#/home" data-route="home">书房</a>
+      <a href="#/urge" data-route="urge">今日敦促</a>
+      <a href="#/notes" data-route="notes">碎碎念</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page" id="page-home">
+  <h1 class="title">大师们轮班督促你写作</h1>
+  <p class="subtitle">四位文学巨匠已就位 · 点一点，读取他们的文字</p>
+
+  <div class="masters">
+    <div class="card" data-master="tolstoy">
+      <span class="wave">👋</span>
+      <div class="bubble"></div>
+      <img src="https://bee-reg-ab.imagency.cn/mr/6181/26/fca42e812f185117b866dd4d13d5a5c8.jpg" alt="托尔斯泰肖像">
+      <h3>列夫 · 托尔斯泰</h3>
+      <div class="era">1828‑1910 · 俄国</div>
+      <p class="role">坚持每日写日记的思想者</p>
+    </div>
+    <div class="card" data-master="kafka">
+      <span class="wave">👋</span>
+      <div class="bubble"></div>
+      <img src="https://bee-reg-ab.imagency.cn/mr/6181/26/283fdbce149036d91e3a022e8f242849.jpg" alt="卡夫卡肖像">
+      <h3>弗兰兹 · 卡夫卡</h3>
+      <div class="era">1883‑1924 · 布拉格</div>
+      <p class="role">于深夜独自书写内心</p>
+    </div>
+    <div class="card" data-master="zhang">
+      <span class="wave">👋</span>
+      <div class="bubble"></div>
+      <img src="https://bee-reg-ab.imagency.cn/mr/6181/26/a86deef07999ec4e982e6e678032b3ca.jpg" alt="张爱玲肖像">
+      <h3>张爱玲</h3>
+      <div class="era">1920‑1995 · 上海‑洛杉矶</div>
+      <p class="role">于人世苍凉之中落笔</p>
+    </div>
+    <div class="card" data-master="chekhov">
+      <span class="wave">👋</span>
+      <div class="bubble"></div>
+      <img src="https://bee-reg-ab.imagency.cn/mr/6181/26/3980a7c37657ded309c779bb5a58569f.jpg" alt="契诃夫肖像">
+      <h3>安东 · 契诃夫</h3>
+      <div class="era">1860‑1904 · 俄国</div>
+      <p class="role">医生、短篇文学大师</p>
+    </div>
+  </div>
+
+  <div class="daily">
+    <span class="tag">今日摘录</span>
+    <blockquote id="homeDailyQuote"></blockquote>
+    <cite id="homeDailySrc"></cite>
+  </div>
+  <div class="cta-row">
+    <button class="btn ghost" id="homeRefreshQuote">换一条摘录</button>
+  </div>
+</section>
+
+<section class="page" id="page-urge">
+  <h1 class="title">今日敦促</h1>
+  <p class="subtitle">阅读一段文字，勉励今日的书写</p>
+  <div class="duty">
+    <div class="portrait">
+      <img id="urgePortrait" alt="作家肖像">
+      <div class="stamp" id="urgeAuthorName"></div>
+    </div>
+    <div class="speech">
+      <div class="who">今日寄语</div>
+      <div class="quote" id="urgeQuote"><span class="caret"></span></div>
+      <div class="src" id="urgeSrc"></div>
+    </div>
+  </div>
+  <div class="cta-row" style="margin-top:32px;">
+    <button class="btn" id="urgeNext">再换一句</button>
+  </div>
+
+  <div class="checkin">
+    <h3>✍ 今日写作打卡</h3>
+    <div class="row">
+      <input type="number" id="wordInput" min="0" placeholder="今天写了多少字？">
+      <button class="btn small" id="checkinBtn">打卡</button>
+      <span class="hint" id="todayStatus"></span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="num" id="streak">0</div>
+      <div class="lbl">连续写作（天）</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="totalWords">0</div>
+      <div class="lbl">累计字数</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="noteCount">0</div>
+      <div class="lbl">碎碎念（条）</div>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-notes">
+  <h1 class="title">碎碎念记录本</h1>
+  <p class="subtitle">随手记下思绪，保存在本机浏览器</p>
+  <div class="notes-wrap">
+    <div class="note-input">
+      <h3>写下此刻的思绪</h3>
+      <textarea id="noteText" placeholder="在这里记录你的想法……"></textarea>
+      <div class="tools">
+        <span class="kbd"><kbd>Ctrl</kbd>+<kbd>Enter</kbd>保存</span>
+        <button class="btn small" id="saveNoteBtn">保存记录</button>
+      </div>
+    </div>
+    <div class="note-list" id="noteList"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const quoteData = {
+  tolstoy:[
+    ["人类被赋予了一种工作，那就是精神的成长。老是想着结果，对完成天职，是有害处的。","《托尔斯泰最后的日记》一月十四日"],
+    ["现在的生之意义，时时刻刻越发明了地显示出来了。生活，即我们的努力，只有现在才会有。","《托尔斯泰最后的日记》一月十四日"],
+    ["对过去的回忆和对未来的想象，不过是存在于现在的向导工具罢了。","《托尔斯泰最后的日记》一月十四日"],
+    ["在各种各样的工作当中，重要的是：停留在自己不知道的事情的前面，不要以不知为知。","《托尔斯泰最后的日记》一月二十九日"],
+    ["最愚蠢的人，乃是自以为无所不知的人。","《托尔斯泰最后的日记》"],
+    ["当你意识到自己是个谦虚的人的时候，你马上就已经不是个谦虚的人了。","《托尔斯泰最后的日记》八月"],
+    ["对于比什么都熟悉得多的东西，我们却比什么都理解得少。","《托尔斯泰最后的日记》七月一日"],
+    ["人生乃是不断的斗争。因为唯有在斗争当中，人生才能存在。但那并不是达尔文式的生存竞争，而是精神和肉体的斗争。","《托尔斯泰最后的日记》五月一日"],
+    ["只有那被我们称作不幸的境遇，才是精神和肉体斗争的开始，只有在这种境遇当中，才开始有着真正的生活的可能性。","《托尔斯泰最后的日记》八月二十四日"],
+    ["自由是可以完成的。人生的主要问题，就是不要做妨碍自由的事情。","《托尔斯泰最后的日记》五月六日"],
+    ["将已完成的事物转变成习惯的努力，乃是人生最重要的，唯一的问题。","《托尔斯泰最后的日记》五月六日"],
+    ["理解自己的渺小，是件多么好的事情啊。","《托尔斯泰最后的日记》四月五日"],
+    ["多么奇怪呵，我爱着自己，但谁也不爱我。","《托尔斯泰最后的日记》八月十五日"],
+    ["自己依然感到自己可厌，这是好事情。","《托尔斯泰最后的日记》一月"],
+    ["我自己是个可厌的人，但我知道自己的价值——只有一种，那就是善。","《托尔斯泰最后的日记》一月十八日"],
+    ["所谓爱，就是在一切现象当中去认识自己。","《托尔斯泰最后的日记》八月十日"],
+    ["所谓爱，正是把他人的“我”认作自己的。","《托尔斯泰最后的日记》一月七日"],
+    ["对正在来临的死亡，我将不做任何抵抗。生活的一切都被集中于现在的一瞬间。","《托尔斯泰最后的日记》"],
+    ["每一分钟都有死的可能，但还活着，真是值得感谢。","《托尔斯泰最后的日记》"],
+    ["要是还活着，就得写。","《托尔斯泰最后的日记》三月二十二日"],
+    ["我们时常追赶着时间。这就是：时间是我们的知觉形式，我们想要从束缚我们的这一形式里解放出来。","《托尔斯泰最后的日记》九月十四日"],
+    ["世界是动着的，而你却是站着的。不但世界在动，你站着，而且跟它一块动着的，乃是你的肉体。","《托尔斯泰最后的日记》九月十五日"],
+    ["无论在八岁或是在八十二岁都没有什么改变。“自我”这东西，时常从时间中独立出来，是一种不动的存在。","《托尔斯泰最后的日记》九月十五日"],
+    ["在我的生活上最苦痛的条件之一，就是我正生活在奢侈当中。","《托尔斯泰最后的日记》四月八、九日"],
+    ["在对旁人生气的时候，你要想一想这是否因为自己不好。","《托尔斯泰最后的日记》四月"],
+    ["对于人生，理想是不可缺少的。但理想，只有当它“完整无缺”时，才是理想。","《托尔斯泰最后的日记》一月"],
+    ["脱离各种罪过的出路就是献身舍己。脱离各种恶的诱惑的出路就是对理性的信仰。","《托尔斯泰最后的日记》二月"],
+    ["对于女性，做母亲绝不是最高天职。","《托尔斯泰最后的日记》"],
+    ["我要避免玩牌。我想要避免赌博。只有在真实当中才有生活。","《托尔斯泰最后的日记》九月"]
+  ],
+  kafka:[
+    ["我写，是为了把我自己从我的思绪中拯救出来。","卡夫卡日记"],
+    ["一切障碍都能摧毁我。但是我依然要写。","卡夫卡日记"],
+    ["你还年轻，这不是安慰，而是事实。","卡夫卡书信"],
+    ["我所有的作品都像是从某种沉默里写出来的。","卡夫卡日记"],
+    ["写作是一种祈祷。也许这是我唯一的方式。","卡夫卡书信"]
+  ],
+  zhang:[
+    ["你的友情是我的生活的core。我绝对没有那样的妄想，以为还会结交到像你这样的朋友，无论走到天涯海角也再没有这样的人。","《纸短情长》1955年"],
+    ["每次想起在茫茫人海中我们很可能错过认识的机会——太危险了。命运的安排多好！","《纸短情长》"],
+    ["你没有空千万不要给我写信，我永远像在你旁边一样，一切都可以想象。","《纸短情长》致邝文美"],
+    ["越是跟人接触，越是想起Mae的好处，实在是中外只有她这一个人。","《纸短情长》"],
+    ["书是最好的朋友。唯一的缺点是使我近视加深，但还是值得的。","《纸短情长》"],
+    ["我常常故意往“坏”处想——想得太坏，实际发生的事不会那么坏。","《纸短情长》"],
+    ["病后的世界像水洗过了似的，看事情也特别清楚，有许多必要的事物也都还是不太要紧。","《纸短情长》1959年3月16日"],
+    ["任何深的关系都使人vulnerable，在命运之前感到自己完全渺小无助。我觉得没有宗教或其他system的凭借而能够禁受这个，才是人的伟大。","《纸短情长》1959年3月16日"],
+    ["人生不必问“为什么”！活着不一定有目标。","《纸短情长》"],
+    ["最可厌的人，如果你细加研究，结果总发现他不过是个可怜人。","《纸短情长》"],
+    ["父母根本不必为子女担忧。","《纸短情长》"],
+    ["家庭太温暖，反而使人缺少那股“冲劲”。必须对周围不满，才会发愤做事。","《纸短情长》"],
+    ["May all your troubles be little ones. 但愿你的一切烦恼都是小事故。","《纸短情长》"],
+    ["近来我特别感到时间消逝之快，寒咝咝的。","《张爱玲给我的信件》"],
+    ["一个人死了，可能还活在同他亲近爱他的人的心——等到这些人也死了，就完全没有了。","《纸短情长》"],
+    ["其实心中并不大感觉pain，似乎身体会悲伤，而心已不会了。浴时一念及此，也觉喉头转硬，如扣一铁环，紧而痛，如大哭后的感觉。","《纸短情长》"],
+    ["黎明姨言，蒙胧惊醒，闻门砰上，忽听见钟之滴搭，异样地，同时有a rush of loneliness like a wind blowing into the room. 一阵孤单感涌来，像吹进房间的风。","《纸短情长》"],
+    ["〈色，戒〉闹的笑话是［不要写不熟悉的东西］的一个活教训。","《纸短情长》1974.5.14"],
+    ["《半生缘》名字好多了，叫得响，而且很缠绵。","《纸短情长》"],
+    ["我在《小团圆》里讲到自己也很不客气，这种地方总是自己来揭发的好。当然也并不是否定自己。","《书不尽言》"],
+    ["我仍旧无论什么事发生，都在脑子里讲给你听——当然是用中文。","《纸短情长》"],
+    ["东西方究竟能不能相遇？即使没有当前的政治局势，西方也处于可以打破僵局的有利地位，就像唐朝的中国，充满自信，从印度与中亚拿来许多东西，丝毫不怕失去本色。","《纸短情长》"],
+    ["至今西方的中国视野依然与中国人对西方的理解一样刻板局促，狭隘的视野会最终导向狭隘的兴趣。","《纸短情长》"],
+    ["陋巷里家家门口的木板垃圾箱里，都堆满了扔掉的菊花，雅得吓死人。","《纸短情长》"],
+    ["我在赶写《获村》剧本，中文本昨晚刚写完……一方面这工作也就是休息，因为我始终为那小说烦恼着。","《纸短情长》1959.8.9"],
+    ["七月四日我们到海边去看放烟火，我穿着冬大衣，龟颈绒线衫，呢裙子，羊毛紧身长袜，还比不上别人身上裹着毯子，结果冻得没看到就回来了。","《纸短情长》1959.8.9"],
+    ["我自己做了一套赭色夹黑人字呢长衫加上短大衣。无论怎样简化、省事，我也不打算多做，一年一两件，能对付过去就算了。","《纸短情长》1959.8.9"],
+    ["在电视上看大卫尼文拿金像奖，觉得公平。发奖前有Sophia Loren与Dean Martin的一个小镜头很有风致，他装出色迷迷的样子呆望着她，她忽然发觉，失笑，白了他一眼。","《纸短情长》1959.5.3"],
+    ["我说大家闲话对景仔，倒勿是定归要来浪一堆，就勿来浪一堆，心里也好像快活点。","《海上花落》张爱玲译注"],
+    ["我已经不喜欢你了。你是早已不喜欢我了的。这次的决心，我是经过一年半的长时间考虑的。你不要来寻我，即或写信来，我亦是不看的了。","《张爱玲致胡兰成》"],
+    ["这婚姻说不上明智，却充满热情。详细情形以后再告诉你，总之我很快乐和满意。","《纸短情长》与邝文美谈与赖雅结婚"],
+    ["好在现在我已不像从前那样，遇到不快的事就非哭不可了。","《纸短情长》"]
+  ],
+  chekhov:[
+    ["你知道吗，应该在什么地方意识到自己渺小？那应该是在神和智慧、美和自然面前，而不是在人们面前。在人们之中你应该意识到自己的尊严。","契诃夫书信"],
+    ["自卑感是一种“小市民习性”","契诃夫书信集"],
+    ["您是一个名副其实的“新手”，无论遇到什么困难，您都不该忘记：现在写下的每一行文字都是未来的资本。如果您现在不训练自己的手和脑，使它习惯于条理性和强行军；如果您不抓紧时间鞭策自己，那么过上三四年之后，就会悔之莫及了。我认为，您和格鲁津斯基应当每天多多训练自己，像训练马儿跑圆圈道一样。你们二位都很少写作。真该使劲鞭打你们，左右开弓地鞭打。","出自书信集"],
+    ["我认为，描写自然景色要十分简炼，并且要恰到好处。诸如‘落日沐浴在暗黑的海浪中，泛出血红色的金辉’和‘燕子在水面上飞翔，快活地发出唧唧喳喳的叫声’这类老生常谈都应当抛弃。写景时要抓住一些小小的细节，把它们适当地组合起来，使人读后闭上双眼也能看见画面。举例说，如果你这样写：破玻璃瓶碎片在磨坊的堤坝上闪闪发光，像明亮的小星星一样，而一条狗（或狼）的黑影像球儿样地一滚而过——如果你这样写，你就写出了月夜。如果你不嫌厌把自然现象同人们的行为等等作比较，那么你笔下的自然景色就写活了。","致亚·巴·契诃夫，1886年5月10日，莫斯科"],
+    ["在心理描写上也要抓住细节，但愿您别老生常谈。最好是别去描写人物的心情，应当努力使人物的心情在他们的行动中就清晰可见……不必追求众多的人物，作为作品重心的应是两个人：他和她……","致亚·巴·契诃夫，1886年5月10日，莫斯科"],
+    ["请您尽可能多写一些！！写、写、写……一直到写断手指头为止（习字是生活中的一件主要事情！）。","致玛·符·基谢廖娃，1886年9月29日，莫斯科"],
+    ["我保证，在退稿的事情上我不会哄骗、口是心非，也不会巴结奉承。但愿您也不因退稿而发窘。如果即使有一半稿子被退回，那也要比您为《儿童‑波希米亚人的休息》杂志写稿更为合算一些。至于自尊心……我不知道您的看法如何，我是早已处之泰然了……","致玛·符·基谢廖娃，1886年9月29日，莫斯科"],
+    ["请您写各种各样的题材：使人发笑的事和引人流泪的事、好事和坏事。请您提供一些短篇小说、小故事、趣闻、俏皮话、双关语等等。","致玛·符·基谢廖娃，1886年9月29日，莫斯科"],
+    ["您写作的时候，要一气呵成，要对自己的这支笔充满信心。","致玛·符·基谢廖娃，1886年9月29日，莫斯科"],
+    ["文学之所以叫做文学，就因为它是按照生活原有的样子来描绘生活的。它的宗旨是真实，是无条件的老老实实的真实。文学家不是做糖果点心的，不是化妆美容的，也不是使人消愁解闷的；他是一个负有义务的人，他受自己的责任感和良心的约束；既然他已经干了起来，他就不应该打退堂鼓，因此不管他感到多么痛苦，他也该克服自己的洁癖，让生活中的肮脏事儿来玷污他自己的想象……","致玛·符·基谢廖娃，1887年1月14日，莫斯科"],
+    ["你知道吗，应该在什么地方意识到你的渺小？那应该是在神和智慧、美和自然的面前，而不是在人们面前。在人们之中你应该意识到自己的尊严。","致尼·巴·契诃夫，1879年4月，莫斯科"],
+    ["我的灵魂追求高远与宽阔，但我又不得不过一种狭窄的、钻进可恶的卢布和戈比的生活。没有比小市民的生活更庸俗的了……我的灵魂由于意识到我工作是为了钱、钱是我活动的中心而疲惫不堪。","出自书信集"]
+  ]
+};
+
+const masterMeta = {
+  tolstoy:{name:"列夫·托尔斯泰",img:"https://bee-reg-ab.imagency.cn/mr/6181/26/fca42e812f185117b866dd4d13d5a5c8.jpg"},
+  kafka:{name:"弗兰兹·卡夫卡",img:"https://bee-reg-ab.imagency.cn/mr/6181/26/283fdbce149036d91e3a022e8f242849.jpg"},
+  zhang:{name:"张爱玲",img:"https://bee-reg-ab.imagency.cn/mr/6181/26/a86deef07999ec4e982e6e678032b3ca.jpg"},
+  chekhov:{name:"安东·契诃夫",img:"https://bee-reg-ab.imagency.cn/mr/6181/26/3980a7c37657ded309c779bb5a58569f.jpg"}
+};
+
+function getRandomQuote(masterKey){
+  const arr = quoteData[masterKey];
+  const idx = Math.floor(Math.random() * arr.length);
+  return arr[idx];
+}
+
+function getRandomQuoteAll(){
+  const keys = Object.keys(quoteData);
+  const mk = keys[Math.floor(Math.random()*keys.length)];
+  return {masterKey:mk, item:getRandomQuote(mk)};
+}
+
+const pages = {
+  home:document.getElementById("page-home"),
+  urge:document.getElementById("page-urge"),
+  notes:document.getElementById("page-notes")
+};
+const navLinks = document.querySelectorAll('nav a[data-route]');
+
+function renderRoute(route){
+  Object.values(pages).forEach(p=>p.classList.remove("show"));
+  pages[route].classList.add("show");
+  navLinks.forEach(a=>a.classList.remove("active"));
+  const activeLink = document.querySelector(`nav a[data-route="${route}"]`);
+  if (activeLink) activeLink.classList.add("active");
+}
+
+window.addEventListener("hashchange",()=>{
+  const h = window.location.hash.replace("#/","") || "home";
+  renderRoute(h);
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+  const initHash = window.location.hash.replace("#/","") || "home";
+  renderRoute(initHash);
+  initHomeDaily();
+  initUrge();
+  initCards();
+  initNotes();
+  initCheckin();
+});
+
+function initHomeDaily(){
+  refreshHomeDaily();
+  document.getElementById("homeRefreshQuote").onclick = refreshHomeDaily;
+}
+
+function refreshHomeDaily(){
+  const res = getRandomQuoteAll();
+  document.getElementById("homeDailyQuote").innerText = res.item[0];
+  document.getElementById("homeDailySrc").innerText = res.item[1];
+}
+
+function initCards(){
+  const cardList = document.querySelectorAll(".card");
+  cardList.forEach(card=>{
+    card.onclick = function(){
+      const mk = this.dataset.master;
+      const bubble = this.querySelector(".bubble");
+      this.classList.add("greet");
+      setTimeout(()=>this.classList.remove("greet"),2000);
+      const [txt,src] = getRandomQuote(mk);
+      bubble.innerText = `“${txt}”\n——${src}`;
+      bubble.classList.add("on");
+      setTimeout(()=>bubble.classList.remove("on"),4200);
+    };
+  });
+}
+
+function initUrge(){
+  refreshUrge();
+  document.getElementById("urgeNext").onclick = refreshUrge;
+}
+
+function refreshUrge(){
+  const res = getRandomQuoteAll();
+  const meta = masterMeta[res.masterKey];
+  document.getElementById("urgePortrait").src = meta.img;
+  document.getElementById("urgeAuthorName").innerText = meta.name;
+  document.getElementById("urgeQuote").innerText = res.item[0];
+  document.getElementById("urgeSrc").innerText = res.item[1];
+}
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.classList.add("on");
+  setTimeout(()=>t.classList.remove("on"),1600);
+}
+
+function initNotes(){
+  const ta = document.getElementById("noteText");
+  const saveBtn = document.getElementById("saveNoteBtn");
+  const listWrap = document.getElementById("noteList");
+
+  function escapeHtml(str){
+    return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  function renderNotes(){
+    const raw = localStorage.getItem("diary_notes");
+    const arr = raw ? JSON.parse(raw) : [];
+    listWrap.innerHTML = "";
+
+    if(arr.length===0){
+      listWrap.innerHTML = `<div class="empty">还没有记录，写下第一条思绪吧。</div>`;
+      return;
+    }
+
+    arr.forEach((it,idx)=>{
+      const div = document.createElement("div");
+      div.className = "note";
+      div.innerHTML = `<div>${escapeHtml(it.content)}</div>
+        <div class="meta"><span>${it.time}</span><button class="del" data-idx="${idx}">×</button></div>`;
+      listWrap.appendChild(div);
+    });
+
+    listWrap.querySelectorAll(".del").forEach(btn=>{
+      btn.onclick = function(){
+        const i = Number(this.dataset.idx);
+        const arr = JSON.parse(localStorage.getItem("diary_notes"));
+        arr.splice(i,1);
+        localStorage.setItem("diary_notes",JSON.stringify(arr));
+        renderNotes();
+      };
+    });
+  }
+
+  function saveNote(){
+    const content = ta.value.trim();
+    if(!content){ showToast("请先输入内容"); return; }
+    const raw = localStorage.getItem("diary_notes");
+    const arr = raw ? JSON.parse(raw) : [];
+    arr.unshift({content,time:new Date().toLocaleString()});
+    localStorage.setItem("diary_notes",JSON.stringify(arr));
+    ta.value="";
+    renderNotes();
+    showToast("已保存记录");
+  }
+
+  saveBtn.onclick = saveNote;
+  ta.addEventListener("keydown",e=>{
+    if(e.ctrlKey && e.key==="Enter") saveNote();
+  });
+
+  renderNotes();
+}
+
+function initCheckin(){
+  const wordInput = document.getElementById("wordInput");
+  const checkBtn = document.getElementById("checkinBtn");
+  const todayStatus = document.getElementById("todayStatus");
+  const streakEl = document.getElementById("streak");
+  const totalWordsEl = document.getElementById("totalWords");
+  const noteCountEl = document.getElementById("noteCount");
+
+  function todayStr(){
+    const d = new Date();
+    return d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+  }
+
+  function getLog(){
+    return JSON.parse(localStorage.getItem("writing_checkin_log") || "{}");
+  }
+
+  function saveLog(log){
+    localStorage.setItem("writing_checkin_log", JSON.stringify(log));
+  }
+
+  function refreshStats(){
+    const log = getLog();
+    const today = todayStr();
+    const total = Object.values(log).reduce((a,b)=>a+b,0);
+
+    let streak = 0;
+    let offset = 0;
+    while (log[todayStr(offset)]) {
+      streak++;
+      offset++;
+    }
+
+    streakEl.innerText = streak;
+    totalWordsEl.innerText = total.toLocaleString();
+    const noteArr = JSON.parse(localStorage.getItem("diary_notes") || "[]");
+    noteCountEl.innerText = noteArr.length;
+
+    if(log[today]){
+      todayStatus.innerText = "今天已写 " + log[today] + " 字 ✓";
+    }else{
+      todayStatus.innerText = "";
+    }
+  }
+
+  checkBtn.onclick = function(){
+    const w = Math.max(0, parseInt(wordInput.value || "0", 10));
+    const log = getLog();
+    const today = todayStr();
+
+    log[today] = (log[today] || 0) + w;
+    saveLog(log);
+    wordInput.value = "";
+    refreshStats();
+    showToast(w > 0 ? "已打卡 +" + w + " 字" : "已打卡");
+  };
+
+  refreshStats();
+}
+</script>
+
+</body>
+</html>
